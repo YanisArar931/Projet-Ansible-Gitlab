@@ -1,0 +1,14 @@
+---
+# tasks file for common
+- name: Update apt packages
+  apt:
+     update_cache: yes
+
+- name: Install basic tools
+  apt:
+     name:
+         - vim
+         - git
+         - curl
+         - wget
+     state: present

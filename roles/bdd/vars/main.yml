@@ -1,0 +1,8 @@
+---
+# vars file for bdd
+postgresql_user_password: "password"
+postgresql_databases:
+ - all
+ - dev
+ - stage
+ - prod

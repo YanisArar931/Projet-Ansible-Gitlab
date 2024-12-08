@@ -1,0 +1,31 @@
+- name: Add Gitlab repository
+  apt_repository:
+      repo: "deb https://packages.gitlab.com/gitlab/gitlab-ce/ubuntu/ focal main"
+      state: present
+      update_cache: yes
+
+- name: Install Gitlab
+  apt:
+    name: gitlab-ce
+    state: present
+
+- name: Configurer Gitlab
+  template:
+    src: gitlab.rb.j2
+    dest: /etc/gitlab/gitlab.rb
+
+- name: Reconfigure Gitlab
+  command: gitlab-ctl reconfigure
+
+- name: Read generated root password
+  command:
+     cmd: cat /etc/gitlab/initial_root_password
+  register: root_password
+  failed_when: root_password.rc not in [0,1]
+  changed_when: false
+  become: true
+
+- name: Show root password
+  debug:
+    msg : >
+      Mot de passe root : {{ root_password.sdout | default ('Password file is not found. Please check Gitlab configuration. ')}}

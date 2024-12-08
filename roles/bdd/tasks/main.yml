@@ -1,0 +1,44 @@
+---
+# tasks file for bdd
+- name: Install PostgreSQL
+  apt:
+     name: postgresql
+     state: present
+
+- name: Ensure PostgreSQL is running
+  service:
+      name: postgresql
+      state: started
+      enabled: true
+
+- name: Create database
+  postgresql_db:
+      name : "{{ item }}"
+  loop:
+    - all
+    - dev
+    - stage
+    - prod
+
+- name: Create user
+  postgresql_user:
+    name: vagrant
+    password: "password"
+    priv: "ALL"
+
+- name: Autorisation all connections
+  ansible.builtin.replace:
+    path: /etc/postgresql/13/main/pg_hba.conf
+    regexp: '^local\s+all\s+all\s+127\.0\.0\.1/32\s+md5$'
+    replace: 'host    all             all              0.0.0.0/0               md5'
+
+- name: Modification authentification method
+  ansible.builtin.replace:
+    path: /etc/postgresql/13/main/pg_hba.conf
+    regexp: '^local\s+all\s+postgres\s+peer$'
+    replace: 'local   all              postgre                               trust'
+
+- name: Restart PostgreSQL
+  service:
+    name: postgresql
+    state: restarted

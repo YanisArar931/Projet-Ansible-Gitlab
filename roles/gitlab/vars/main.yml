@@ -1,0 +1,4 @@
+gitlab_external_url: "http://192.168.45.133"
+gitlab_ssh_port: 2222
+gitlab_data_dir: "/var/opt/gitlab"
+gitlab_root_password: "Motdepasse99!"

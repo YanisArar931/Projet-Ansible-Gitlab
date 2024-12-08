@@ -1,0 +1,7 @@
+all:
+  children:
+    gitlab:
+      hosts:
+        gitlab-server:
+          ansible_host: 192.168.45.133
+          ansible_user: root
