@@ -1,7 +1,8 @@
 - name: Déploiement de Gitlab
-  hosts: gitlab
-  become: true
+  hosts: all
+  become: yes
   roles:
     - common
     - gitlab
     - bdd
+    - docker
